@@ -84,7 +84,7 @@ const AddVehiclePage = () => {
     <div className="min-h-screen flex flex-col p-6 page-transition">
       {/* Header */}
       <button
-        onClick={() => navigate('/otp')}
+        onClick={() => navigate(-1)}
         className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-8 hover:bg-secondary/80 transition-colors"
       >
         <ArrowLeft className="w-5 h-5 text-secondary-foreground" />
