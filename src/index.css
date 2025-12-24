@@ -1,0 +1,401 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ParkEase Design System - Bold Teal & Coral Theme */
+
+@layer base {
+  :root {
+    /* Deep teal primary with coral accent */
+    --background: 180 20% 98%;
+    --foreground: 180 40% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 180 40% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 180 40% 8%;
+
+    /* Vibrant Teal Primary */
+    --primary: 168 80% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Light Teal Secondary */
+    --secondary: 168 40% 92%;
+    --secondary-foreground: 168 80% 30%;
+
+    /* Muted Teal */
+    --muted: 168 20% 94%;
+    --muted-foreground: 168 15% 45%;
+
+    /* Warm Coral Accent */
+    --accent: 12 90% 62%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Success Green */
+    --success: 152 70% 40%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning Amber */
+    --warning: 38 95% 55%;
+    --warning-foreground: 38 95% 15%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 168 20% 88%;
+    --input: 168 20% 88%;
+    --ring: 168 80% 36%;
+
+    --radius: 1rem;
+
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(168 80% 36%) 0%, hsl(175 70% 45%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(12 90% 62%) 0%, hsl(25 85% 55%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(168 20% 98%) 100%);
+    --gradient-hero: linear-gradient(145deg, hsl(168 80% 36% / 0.1) 0%, hsl(12 90% 62% / 0.08) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px hsl(168 40% 20% / 0.06);
+    --shadow-md: 0 4px 16px hsl(168 40% 20% / 0.08);
+    --shadow-lg: 0 8px 32px hsl(168 40% 20% / 0.12);
+    --shadow-glow: 0 0 24px hsl(168 80% 36% / 0.25);
+    --shadow-accent-glow: 0 0 24px hsl(12 90% 62% / 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 168 80% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 168 40% 92%;
+    --sidebar-accent-foreground: 168 80% 30%;
+    --sidebar-border: 168 20% 88%;
+    --sidebar-ring: 168 80% 36%;
+  }
+
+  .dark {
+    --background: 180 30% 6%;
+    --foreground: 168 20% 95%;
+
+    --card: 180 25% 10%;
+    --card-foreground: 168 20% 95%;
+
+    --popover: 180 25% 10%;
+    --popover-foreground: 168 20% 95%;
+
+    --primary: 168 75% 50%;
+    --primary-foreground: 180 30% 6%;
+
+    --secondary: 180 25% 15%;
+    --secondary-foreground: 168 60% 70%;
+
+    --muted: 180 20% 15%;
+    --muted-foreground: 168 15% 55%;
+
+    --accent: 12 85% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 152 65% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 90% 50%;
+    --warning-foreground: 38 95% 10%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 180 20% 18%;
+    --input: 180 20% 18%;
+    --ring: 168 75% 50%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(168 75% 45%) 0%, hsl(175 65% 55%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(12 85% 55%) 0%, hsl(25 80% 50%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(180 25% 12%) 0%, hsl(180 25% 8%) 100%);
+    --gradient-hero: linear-gradient(145deg, hsl(168 75% 50% / 0.15) 0%, hsl(12 85% 58% / 0.1) 100%);
+
+    --shadow-sm: 0 2px 8px hsl(180 50% 5% / 0.4);
+    --shadow-md: 0 4px 16px hsl(180 50% 5% / 0.5);
+    --shadow-lg: 0 8px 32px hsl(180 50% 5% / 0.6);
+    --shadow-glow: 0 0 24px hsl(168 75% 50% / 0.35);
+    --shadow-accent-glow: 0 0 24px hsl(12 85% 58% / 0.4);
+
+    --sidebar-background: 180 25% 8%;
+    --sidebar-foreground: 168 20% 90%;
+    --sidebar-primary: 168 75% 50%;
+    --sidebar-primary-foreground: 180 30% 6%;
+    --sidebar-accent: 180 25% 15%;
+    --sidebar-accent-foreground: 168 60% 70%;
+    --sidebar-border: 180 20% 18%;
+    --sidebar-ring: 168 75% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
+  }
+
+  .font-mono {
+    font-family: 'Space Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+  
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+  
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .shadow-accent-glow {
+    box-shadow: var(--shadow-accent-glow);
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Smooth page transitions */
+  .page-transition {
+    animation: fadeSlideIn 0.3s ease-out;
+  }
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
+
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 8px hsl(168 80% 36% / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px hsl(168 80% 36% / 0.5);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-slide-down {
+    animation: slide-down 0.3s ease-out;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Hide scrollbars */
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Slot Grid Layouts - Desktop vs Mobile */
+  .slot-grid-desktop {
+    display: grid;
+    grid-template-columns: repeat(6, 48px);
+    gap: 12px;
+    justify-content: start;
+  }
+
+  .slot-grid-mobile {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .slot-grid-mobile-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0;
+    justify-content: flex-start;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .slot-grid-mobile-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slot-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slot-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .slot-legend {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      gap: 12px;
+      justify-content: center;
+    }
+  }
+
+  /* Calendar/Date Picker Styling - Teal Only */
+  .rdp {
+    --rdp-cell-size: 40px;
+    --rdp-accent-color: #1B9A8E;
+    --rdp-background-color: #1B9A8E;
+    --rdp-accent-color-dark: #15A085;
+    --rdp-background-color-dark: #15A085;
+    --rdp-outline: 2px solid var(--rdp-accent-color);
+    --rdp-outline-selected: 2px solid var(--rdp-accent-color);
+  }
+
+  /* Force teal colors with higher specificity */
+  .rdp-day_selected,
+  .rdp-day_selected:focus,
+  .rdp-day_selected:active,
+  .rdp-day_selected:hover {
+    background-color: #1B9A8E !important;
+    color: white !important;
+    border-radius: 9999px !important;
+  }
+
+  .rdp-day_range_start,
+  .rdp-day_range_end,
+  .rdp-day_range_start:hover,
+  .rdp-day_range_end:hover {
+    background-color: #1B9A8E !important;
+    color: white !important;
+    border-radius: 9999px !important;
+  }
+
+  .rdp-day_range_middle {
+    background-color: #B2F5EA !important;
+    color: #064e3b !important;
+  }
+
+  .rdp-day_today:not(.rdp-day_selected) {
+    border: 1px solid #1B9A8E !important;
+    background: transparent !important;
+    font-weight: bold;
+    color: #1B9A8E !important;
+  }
+
+  .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+    background-color: #F0FDFA !important;
+    color: #1B9A8E !important;
+  }
+
+  /* Remove any orange/warning colors */
+  .rdp [class*="orange"],
+  .rdp [class*="warning"],
+  .rdp [style*="orange"],
+  .rdp [style*="#ff"] {
+    background-color: #1B9A8E !important;
+    color: white !important;
+  }
+
+  /* Override any default calendar accent colors */
+  .react-datepicker__day--selected,
+  .react-datepicker__day--selected:hover,
+  .react-datepicker__day--keyboard-selected {
+    background-color: #1B9A8E !important;
+    color: white !important;
+  }
+
+  /* Shadcn Calendar overrides */
+  .calendar [data-selected="true"],
+  .calendar [aria-selected="true"] {
+    background-color: #1B9A8E !important;
+    color: white !important;
+  }
+}
