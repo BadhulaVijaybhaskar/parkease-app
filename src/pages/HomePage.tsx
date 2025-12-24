@@ -4,16 +4,24 @@ import { Input } from '@/components/ui/input';
 import { Search, MapPin, Clock, Car, User, ChevronRight, Sparkles } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { format } from 'date-fns';
+import { useEffect } from 'react';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, hasVehicle, bookings, activeBooking, vehicles } = useApp();
 
-  // Redirect if not authenticated
-  if (!isAuthenticated || !hasVehicle) {
-    navigate('/');
-    return null;
-  }
+  // Handle redirects in useEffect
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/');
+      return;
+    }
+    
+    if (!hasVehicle) {
+      navigate('/add-vehicle');
+      return;
+    }
+  }, [isAuthenticated, hasVehicle, navigate]);
 
   const recentBookings = bookings
     .filter(b => b.status === 'COMPLETED')
@@ -80,7 +88,7 @@ const HomePage = () => {
         </div>
 
         {/* Active Booking */}
-        {activeBooking && (
+        {activeBooking && activeBooking.status !== 'COMPLETED' && activeBooking.status !== 'CANCELLED' && (
           <div>
             <h2 className="text-lg font-semibold text-foreground mb-3">Active Booking</h2>
             <button

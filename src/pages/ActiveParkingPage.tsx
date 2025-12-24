@@ -97,25 +97,37 @@ const ActiveParkingPage = () => {
 
   const handleCheckIn = async () => {
     setIsLoading(true);
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-    checkIn(activeBooking.id);
-    setIsLoading(false);
-    toast.success('✅ Check-in recorded successfully');
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 800));
+      await checkIn(activeBooking.id);
+      setIsLoading(false);
+      toast.success('✅ Check-in recorded successfully');
+    } catch (error) {
+      console.error('Failed to check in:', error);
+      toast.error('Check in failed. Please try again.');
+      setIsLoading(false);
+    }
   };
 
   const handleCheckOut = async () => {
     setIsLoading(true);
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    checkOut(activeBooking.id);
-    setIsLoading(false);
-    
-    // Success animation and redirect
-    toast.success('Parking completed. Generating receipt…');
-    setTimeout(() => {
-      navigate(`/receipt/${activeBooking.id}`);
-    }, 1500);
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await checkOut(activeBooking.id);
+      setIsLoading(false);
+      
+      // Success animation and redirect
+      toast.success('Parking completed. Generating receipt…');
+      setTimeout(() => {
+        navigate(`/receipt/${activeBooking.id}`);
+      }, 1500);
+    } catch (error) {
+      console.error('Failed to check out:', error);
+      toast.error('Check out failed. Please try again.');
+      setIsLoading(false);
+    }
   };
 
   const handleCancelBooking = async () => {

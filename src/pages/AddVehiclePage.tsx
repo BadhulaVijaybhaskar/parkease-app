@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, ArrowRight, Car, Bike, Plus, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Car, Bike, Plus, X, Phone } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 const AddVehiclePage = () => {
   const navigate = useNavigate();
-  const { vehicles, addVehicle, removeVehicle, isOtpVerified } = useApp();
+  const { vehicles, addVehicle, removeVehicle, isOtpVerified, mobile, setMobile } = useApp();
   const [vehicleType, setVehicleType] = useState<'car' | 'bike'>('car');
   const [vehicleNumber, setVehicleNumber] = useState('');
   const [nickname, setNickname] = useState('');
@@ -26,9 +26,20 @@ const AddVehiclePage = () => {
     return value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
   };
 
+  // Mobile number formatting
+  const formatMobile = (value: string) => {
+    return value.replace(/[^0-9]/g, '').slice(0, 10);
+  };
+
   const isValidNumber = /^[A-Z]{2}\d{2}[A-Z]{1,2}\d{4}$/.test(vehicleNumber);
+  const isValidMobile = /^[6-9]\d{9}$/.test(mobile);
 
   const handleAddVehicle = async () => {
+    if (!isValidMobile) {
+      toast.error('Please enter a valid mobile number');
+      return;
+    }
+    
     if (!isValidNumber) {
       toast.error('Please enter a valid vehicle number (e.g., KA01AB1234)');
       return;
@@ -41,18 +52,24 @@ const AddVehiclePage = () => {
     }
 
     setIsAdding(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
     
-    addVehicle({
-      type: vehicleType,
-      number: vehicleNumber,
-      nickname: nickname || undefined,
-    });
-    
-    setIsAdding(false);
-    setVehicleNumber('');
-    setNickname('');
-    toast.success('Vehicle added successfully!');
+    try {
+      await addVehicle({
+        type: vehicleType,
+        number: vehicleNumber,
+        nickname: nickname || undefined,
+      });
+      
+      // Clear form after successful addition
+      setVehicleNumber('');
+      setNickname('');
+      toast.success('Vehicle added successfully!');
+    } catch (error) {
+      console.error('Failed to add vehicle:', error);
+      toast.error(`Failed to add vehicle: ${error.message || 'Please try again'}`);
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   const handleContinue = () => {
@@ -82,6 +99,27 @@ const AddVehiclePage = () => {
           <p className="text-muted-foreground">
             Add at least one vehicle to start booking
           </p>
+        </div>
+
+        {/* Mobile Number */}
+        <div className="mb-6">
+          <label className="text-sm font-medium text-foreground mb-2 block">
+            Mobile Number *
+          </label>
+          <div className="relative">
+            <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              placeholder="9876543210"
+              value={mobile}
+              onChange={(e) => setMobile(formatMobile(e.target.value))}
+              className="h-14 pl-12 text-lg rounded-2xl border-2 focus:border-primary"
+            />
+          </div>
+          {mobile.length > 0 && !isValidMobile && (
+            <p className="text-sm text-destructive mt-2">
+              Please enter a valid 10-digit mobile number
+            </p>
+          )}
         </div>
 
         {/* Vehicle Type Selection */}
@@ -145,7 +183,7 @@ const AddVehiclePage = () => {
         {/* Add Button */}
         <Button
           onClick={handleAddVehicle}
-          disabled={!isValidNumber || isAdding}
+          disabled={!isValidNumber || !isValidMobile || isAdding}
           variant="outline"
           className="h-12 rounded-2xl border-2 border-dashed border-primary/50 text-primary hover:bg-primary/10 disabled:opacity-50 mb-6"
         >

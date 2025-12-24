@@ -24,21 +24,27 @@ const PaymentPage = () => {
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     if (success) {
-      const booking = {
-        id: generateBookingId(),
-        lotId: lot.id,
-        lot,
-        vehicleId: vehicle.id,
-        vehicle,
-        startTime,
-        endTime,
-        status: 'PAID' as const,
-        amount,
-        qrToken: generateQRToken(),
-      };
-      confirmBooking(booking);
-      toast.success('Payment successful!');
-      navigate('/booking/confirmation');
+      try {
+        const booking = {
+          id: generateBookingId(),
+          lotId: lot.id,
+          lot,
+          vehicleId: vehicle.id,
+          vehicle,
+          startTime,
+          endTime,
+          status: 'PAID' as const,
+          amount,
+          qrToken: generateQRToken(),
+        };
+        await confirmBooking(booking);
+        toast.success('Payment successful!');
+        navigate('/booking/confirmation');
+      } catch (error) {
+        console.error('Failed to confirm booking:', error);
+        toast.error('Booking failed. Please try again.');
+        setIsProcessing(false);
+      }
     } else {
       toast.error('Payment failed. Please try again.');
       setIsProcessing(false);

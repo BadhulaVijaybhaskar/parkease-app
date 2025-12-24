@@ -9,6 +9,7 @@ import { AppProvider } from "@/context/AppContext";
 import LandingPage from "@/pages/LandingPage";
 import SplashPage from "@/pages/SplashPage";
 import LoginPage from "@/pages/LoginPage";
+import AuthCallbackPage from "@/pages/AuthCallbackPage";
 import OtpPage from "@/pages/OtpPage";
 import AddVehiclePage from "@/pages/AddVehiclePage";
 import LocationPermissionPage from "@/pages/LocationPermissionPage";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/" element={<LandingPage />} />
             <Route path="/splash" element={<SplashPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/auth/callback" element={<AuthCallbackPage />} />
             <Route path="/otp" element={<OtpPage />} />
             <Route path="/add-vehicle" element={<AddVehiclePage />} />
             <Route path="/location-permission" element={<LocationPermissionPage />} />

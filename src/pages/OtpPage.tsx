@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, RefreshCw } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { toast } from 'sonner';
+import { SupabaseService } from '@/services/supabase';
+import { USE_SUPABASE } from '@/lib/supabase';
 
 const OtpPage = () => {
   const navigate = useNavigate();
@@ -66,16 +68,45 @@ const OtpPage = () => {
     if (!isValidOtp) return;
 
     setIsLoading(true);
-    // Mock OTP verification - accepts any 6-digit OTP
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    verifyOtp();
-    setIsLoading(false);
-    toast.success('Phone verified successfully!');
     
-    if (hasVehicle) {
-      navigate('/home');
-    } else {
-      navigate('/add-vehicle');
+    try {
+      if (USE_SUPABASE) {
+        const otpCode = otp.join('');
+        const { data, error } = await SupabaseService.verifyOtp(mobile, otpCode);
+        
+        if (error) {
+          throw error;
+        }
+        
+        // Upsert user record
+        if (data.user) {
+          await SupabaseService.upsertUser(data.user);
+        }
+        
+        verifyOtp();
+        toast.success('Phone verified successfully!');
+      } else {
+        // Fallback to mock
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        verifyOtp();
+        toast.success('Phone verified successfully!');
+      }
+      
+      if (hasVehicle) {
+        navigate('/home');
+      } else {
+        navigate('/add-vehicle');
+      }
+    } catch (error: any) {
+      if (error.message?.includes('Invalid token')) {
+        toast.error('Incorrect OTP. Please try again.');
+      } else if (error.message?.includes('expired')) {
+        toast.error('OTP expired. Please request a new one.');
+      } else {
+        toast.error(error.message || 'Verification failed. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
